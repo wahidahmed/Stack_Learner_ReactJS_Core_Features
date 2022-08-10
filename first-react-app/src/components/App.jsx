@@ -1,11 +1,14 @@
 import React,{ Component } from "react";
+import Profile from "./profile";
 
 
 class App extends Component{
     render(){
-        return (<div>
-            <h1>hello react</h1>
-        </div>)
+        return (
+        <div className="App">
+            <Profile />
+        </div>
+        )
     }
 }
 
