@@ -2,44 +2,75 @@ import React,{ Component } from "react";
 import Profile from "./profile";
 
 
-class Child extends Component {
-
-  render() {
-
-    this.props.func(this)
-    return (
-      <h1>
-        i am child
-      </h1>
-    )
-  }
-}
-
-
-const ChildComponent=(props)=>{
-    <div>
-    <p>i am a child component.
-    i dont know what to do.</p>
-    {/* {props.Children} */}
-</div>
-}
 
 class App extends Component{
 
-    getContext(context){
-        console.log(context);
-    }
+ state={
+  count:0
+ }
+
+intervalId=null;
+
+ increament=()=>{
+  this.setState({
+    count:this.state.count+1,
+  })
+ }
+
+ decreament=()=>{
+  if(this.state.count>0){
+    this.setState({
+      count:this.state.count-1,
+    })
+  }
+ 
+ }
+
+ startCount=()=>{
+  if(this.state.count>0 && !this.intervalId){
+   this.intervalId= setInterval(() => {
+      this.setState({
+        count:this.state.count-1,
+      },()=>{
+        if(this.state.count===0){
+          alert('count down done');
+          clearInterval(this.intervalId);
+          this.intervalId=null;
+        }
+      })
+    }, 1000);
+  }
+ }
+ stopCount=()=>{
+  if(this.intervalId){
+    clearInterval(this.intervalId);
+    this.intervalId=null;
+  }
+}
+resetCount=()=>{
+  this.setState({
+    count:0,
+  })
+
+  clearInterval(this.intervalId);
+  this.intervalId=null;
+}
 
     render(){
-        this.getContext(this);
+
         return (
         <div className="App">
-            <Profile />
-            <Child func={this.getContext}/>
-
-                <ChildComponent>
-                <h4>hi this is a test of non self closing child component</h4>
-                </ChildComponent>
+            <h1>create a timer</h1>
+            <div>
+              <button onClick={this.decreament} >Decrement</button>
+              <span style={{margin:'10px'}}>{this.state.count}</span>
+              <button onClick={this.increament} >Increment</button>
+            </div>
+            <div>
+              <button onClick={this.startCount}>Start</button>
+              <button onClick={this.stopCount}>stop</button>
+              <button onClick={this.resetCount}>reset</button>
+            </div>
         </div>
         )
     }
